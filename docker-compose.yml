@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    volumes:
+      - ./.rabbitmq/data:/var/lib/rabbitmq
+      - ./.rabbitmq/.config:/etc/rabbitmq/rabbitmq.config
+    env_file:
+      - ./env/.rabbitmq
+    ports:
+      - 15672:15672

@@ -1,12 +1,16 @@
 version: '3.4'
+name: message-brokers
 
 services:
   rabbitmq:
     image: rabbitmq:3-management
     volumes:
-      - ./.rabbitmq/data:/var/lib/rabbitmq
-      - ./.rabbitmq/.config:/etc/rabbitmq/rabbitmq.config
+      - ./local-resources/rabbitmq/data:/var/lib/rabbitmq
+      - ./local-resources/rabbitmq/.config:/etc/rabbitmq/rabbitmq.config
     env_file:
       - ./env/.rabbitmq
+    environment:
+      - RABBITMQ_NODENAME=rabbit@rabbitmq
     ports:
       - 15672:15672
+      - 5672:5672

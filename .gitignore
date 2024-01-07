@@ -43,8 +43,5 @@ Thumbs.db
 # Docker setup
 /env
 
-/.rabbitmq
-
-
-# Local draft source codes
-/local-draft
+# Local resources
+/local-resources

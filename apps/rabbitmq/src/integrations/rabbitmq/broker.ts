@@ -9,29 +9,7 @@ export const init = () => {
 
     initializeBrokerResources(connection);
 
-    connection.createChannel(function(channelError, channel) {
-      if (channelError) {
-        throw channelError;
-      }
-      listenPublishers(data => {
-        const { xName } = data;
-        if (!xName) {
-          return sendToQueue(channel, data);
-        }
-
-        return channel.publish(
-          xName,
-          data.routingKey,
-          Buffer.from(JSON.stringify(data.message))
-        );
-      })
-    });
-  });
-}
-
-const sendToQueue = (channel: amqp.Channel, data) => {
-  channel.sendToQueue(data.queueName, Buffer.from(JSON.stringify(data.message)), {
-    persistent: true
+    publishMessage(connection);
   });
 }
 
@@ -62,3 +40,28 @@ const initializeBrokerResources = (connection: amqp.Connection) => {
     }, 10000 /* 10 seconds */)
   });
 };
+
+const publishMessage = (connection: amqp.Connection) => {
+  connection.createChannel(function (channelError, channel) {
+    if (channelError) {
+      throw channelError;
+    }
+
+    listenPublishers(data => {
+      const { xName } = data;
+
+      if (!xName) {
+        return channel.sendToQueue(data.routingKey, Buffer.from(JSON.stringify(data.message)), {
+          persistent: true
+        });
+      }
+
+      return channel.publish(
+        xName,
+        data.routingKey,
+        Buffer.from(JSON.stringify(data.message))
+      );
+    });
+  });
+}
+

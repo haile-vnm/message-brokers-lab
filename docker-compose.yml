@@ -14,3 +14,16 @@ services:
     ports:
       - 15672:15672
       - 5672:5672
+
+  rabbitmq-publisher:
+    extends:
+      file: docker-compose.base.yml
+      service: nx-app-base
+    environment:
+      - PORT=3000
+      - RABBITMQ_ENDPOINT=amqp://admin:admin@localhost
+    ports:
+      - '3000:3000'
+    command: nx serve rabbitmq
+    depends_on:
+      - rabbitmq

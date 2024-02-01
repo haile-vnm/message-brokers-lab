@@ -25,8 +25,8 @@ const initializeBrokerResources = (connection: amqp.Connection) => {
     channel.assertExchange('animal-exchange', 'direct');
     channel.assertExchange('fruit-exchange', 'topic');
 
-    channel.assertQueue('dogs-barking', { durable: true, arguments: { 'x-queue-type': 'quorum' } });
-    channel.assertQueue('dogs-barking-quorum', { durable: true, arguments: { 'x-queue-type': 'quorum' } });
+    channel.assertQueue('dogs-barking', { durable: true });
+    channel.assertQueue('dogs-barking-replicated', { durable: true, arguments: { 'x-queue-type': 'quorum' } });
 
     setTimeout(() => {
       channel.close(err => {
@@ -64,4 +64,3 @@ const publishMessage = (connection: amqp.Connection) => {
     });
   });
 }
-

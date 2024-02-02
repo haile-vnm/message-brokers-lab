@@ -3,12 +3,12 @@ RABBITMQ_DEFAULT_USER=admin
 
 # publisher
 PORT=3000
-RABBITMQ_ENDPOINT=amqp://admin:admin@localhost
+RABBITMQ_ENDPOINT=amqp://admin:admin@rabbitmq
 X_LOGS=x-logs
 X_COLORS=x-colors
 X_ORGANISMS=x-organisms
-Q_BLACK=x-black
-Q_BROWN=x-brown
-Q_APPLES=x-apples
-Q_ANIMALS=x-animals
-Q_EVERYTHING=x-everything
+Q_BLACK=q-black
+Q_BROWN=q-brown
+Q_APPLES=q-apples
+Q_ANIMALS=q-animals
+Q_EVERYTHING=q-everything

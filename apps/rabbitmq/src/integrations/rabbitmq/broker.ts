@@ -16,8 +16,8 @@ export const init = () => {
 
 const initializeBrokerResources = (connection: amqp.Connection) => {
   connection.createChannel((err, channel) => {
-    if (!err) {
-      console.log('❌ Setup Exchanges: can not establish the channel', err.message);
+    if (err) {
+      console.log('❌ Setup Exchanges: can not establish the channel', err);
       throw err;
     }
 
@@ -38,7 +38,7 @@ const initializeBrokerResources = (connection: amqp.Connection) => {
     channel.assertExchange(getEnv('X_ORGANISMS'), 'topic');
 
     channel.assertQueue(getEnv('Q_APPLES'), { durable: true, arguments: { 'x-queue-type': 'quorum' } });
-    channel.bindQueue(getEnv('Q_APPLES'), getEnv('X_ORGANISMS'), 'fruit.apples');
+    channel.bindQueue(getEnv('Q_APPLES'), getEnv('X_ORGANISMS'), 'fruit.apple');
 
     channel.assertQueue(getEnv('Q_ANIMALS'), { durable: false });
     channel.bindQueue(getEnv('Q_ANIMALS'), getEnv('X_ORGANISMS'), 'animal.*');

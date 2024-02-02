@@ -6,7 +6,7 @@ POST {{rabbitmqPublisherHost}}/animals
 {
   "animal": {
     "name": "pug",
-    "types": "dog"
-  }
+  },
+  "types": "dog"
 }
 ###

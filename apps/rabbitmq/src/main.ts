@@ -31,6 +31,6 @@ app.post('/fruits', (req, res) => {
   res.json({ ok: Date.now() });
 });
 
-app.listen(port, host, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`[ ready ] http://${host}:${port}`);
 });

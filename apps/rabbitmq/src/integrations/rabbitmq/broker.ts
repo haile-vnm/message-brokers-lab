@@ -1,5 +1,6 @@
 import * as amqp from 'amqplib/callback_api';
-import { listenPublishers } from './events';
+import { registerPublishers } from './events';
+import { getEnv } from '../../helpers/env';
 
 export const init = () => {
   amqp.connect(process.env.RABBITMQ_ENDPOINT, function(connectionError, connection) {
@@ -21,32 +22,32 @@ const initializeBrokerResources = (connection: amqp.Connection) => {
     }
 
     // logs fanout exchange
-    channel.assertExchange('logs-exchange', 'fanout');
+    channel.assertExchange(getEnv('X_LOGS'), 'fanout');
 
     // Colors direct exchange
-    channel.assertExchange('colors-exchange', 'direct');
-    channel.bindExchange('logs-exchange', 'colors-exchange', 'brown');
+    channel.assertExchange(getEnv('X_COLORS'), 'direct');
+    channel.bindExchange(getEnv('X_LOGS'), getEnv('X_COLORS'), 'brown');
 
-    channel.assertQueue('brown-queue', { durable: false });
-    channel.bindQueue('brown-queue', 'colors-exchange', 'brown');
+    channel.assertQueue(getEnv('Q_BROWN'), { durable: false });
+    channel.bindQueue(getEnv('Q_BROWN'), getEnv('X_COLORS'), 'brown');
 
-    channel.assertQueue('black-queue', { durable: false });
-    channel.bindQueue('black-queue', 'colors-exchange', 'black');
+    channel.assertQueue(getEnv('Q_BLACK'), { durable: false });
+    channel.bindQueue(getEnv('Q_BLACK'), getEnv('X_COLORS'), 'black');
 
     // organisms topic exchange
-    channel.assertExchange('organisms-exchange', 'topic');
+    channel.assertExchange(getEnv('X_ORGANISMS'), 'topic');
 
-    channel.assertQueue('apples-queue', { durable: true, arguments: { 'x-queue-type': 'quorum' } });
-    channel.bindQueue('apples-queue', 'organisms-exchange', 'fruit.apples');
+    channel.assertQueue(getEnv('Q_APPLES'), { durable: true, arguments: { 'x-queue-type': 'quorum' } });
+    channel.bindQueue(getEnv('Q_APPLES'), getEnv('X_ORGANISMS'), 'fruit.apples');
 
-    channel.assertQueue('animals-queue', { durable: false });
-    channel.bindQueue('animals-queue', 'organisms-exchange', 'animal.*');
+    channel.assertQueue(getEnv('Q_ANIMALS'), { durable: false });
+    channel.bindQueue(getEnv('Q_ANIMALS'), getEnv('X_ORGANISMS'), 'animal.*');
 
     // everything-queue, store all message from above exchanges
-    channel.assertQueue('everything-queue', { durable: false });
-    channel.bindQueue('everything-queue', 'colors-exchange', 'brown');
-    channel.bindQueue('everything-queue', 'colors-exchange', 'black');
-    channel.bindQueue('everything-queue', 'organisms-exchange', '#');
+    channel.assertQueue(getEnv('Q_EVERYTHING'), { durable: false });
+    channel.bindQueue(getEnv('Q_EVERYTHING'), getEnv('X_COLORS'), 'brown');
+    channel.bindQueue(getEnv('Q_EVERYTHING'), getEnv('X_COLORS'), 'black');
+    channel.bindQueue(getEnv('Q_EVERYTHING'), getEnv('X_ORGANISMS'), '#');
 
     setTimeout(() => {
       channel.close(err => {
@@ -67,7 +68,7 @@ const publishMessage = (connection: amqp.Connection) => {
       throw channelError;
     }
 
-    listenPublishers(data => {
+    registerPublishers(data => {
       const { xName } = data;
 
       if (!xName) {

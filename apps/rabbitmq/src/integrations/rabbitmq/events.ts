@@ -3,18 +3,18 @@ import EventEmitter from 'events';
 const eventManager = new EventEmitter();
 const RABBITMQ_PUBLISHING_EVENTS = 'rabbitmq-publishing-events';
 
-export interface RabbitMqEventData {
+export interface RabbitMqEventData<T = unknown> {
   xName?: string;
   routingKey?: string;
-  message: Record<string, unknown>;
+  message: T;
 }
 
-export const listenPublishers = (publisher: (data: RabbitMqEventData) => void) => {
+export const registerPublishers = (publisher: (data: RabbitMqEventData) => void) => {
   eventManager.on(RABBITMQ_PUBLISHING_EVENTS, (data: RabbitMqEventData) => {
     publisher(data);
   });
 }
 
-export const publishMessage = (data: Record<string, unknown>) => {
+export const publishMessage = (data: RabbitMqEventData) => {
   eventManager.emit(RABBITMQ_PUBLISHING_EVENTS, data);
 }

@@ -19,9 +19,8 @@ services:
     extends:
       file: docker-compose.base.yml
       service: nx-app-base
-    environment:
-      - PORT=3000
-      - RABBITMQ_ENDPOINT=amqp://admin:admin@localhost
+    env_file:
+      - ./env/.rabbitmq
     ports:
       - '3000:3000'
     command: nx serve rabbitmq

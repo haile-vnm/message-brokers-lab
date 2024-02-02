@@ -1,0 +1,10 @@
+{
+  "rest-client.environmentVariables": {
+    "$shared": {
+      "jsonContentType": "content-type: application/json"
+    },
+    "local": {
+      "rabbitmqPublisherHost": "http://localhost:3000"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+
+# Register new user
+POST {{rabbitmqPublisherHost}}/animals
+{{jsonContentType}}
+
+{
+  "animal": {
+    "name": "pug",
+    "types": "dog"
+  }
+}
+###

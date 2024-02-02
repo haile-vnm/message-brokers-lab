@@ -20,25 +20,32 @@ const initializeBrokerResources = (connection: amqp.Connection) => {
       throw err;
     }
 
+    // logs fanout exchange
     channel.assertExchange('logs-exchange', 'fanout');
+
+    // Colors direct exchange
     channel.assertExchange('colors-exchange', 'direct');
-    channel.assertExchange('organisms-exchange', 'topic');
+    channel.bindExchange('logs-exchange', 'colors-exchange', 'brown');
 
     channel.assertQueue('brown-queue', { durable: false });
-    channel.assertQueue('black-queue', { durable: false });
-
-    channel.assertQueue('apples-queue', { durable: true });
-    channel.assertQueue('animals-queue', { durable: false });
-    channel.assertQueue('everything-queue', { durable: false, arguments: { 'x-queue-type': 'quorum' } });
-
     channel.bindQueue('brown-queue', 'colors-exchange', 'brown');
+
+    channel.assertQueue('black-queue', { durable: false });
     channel.bindQueue('black-queue', 'colors-exchange', 'black');
 
+    // organisms topic exchange
+    channel.assertExchange('organisms-exchange', 'topic');
+
+    channel.assertQueue('apples-queue', { durable: true, arguments: { 'x-queue-type': 'quorum' } });
+    channel.bindQueue('apples-queue', 'organisms-exchange', 'fruit.apples');
+
+    channel.assertQueue('animals-queue', { durable: false });
+    channel.bindQueue('animals-queue', 'organisms-exchange', 'animal.*');
+
+    // everything-queue, store all message from above exchanges
+    channel.assertQueue('everything-queue', { durable: false });
     channel.bindQueue('everything-queue', 'colors-exchange', 'brown');
     channel.bindQueue('everything-queue', 'colors-exchange', 'black');
-
-    channel.bindQueue('apples-queue', 'organisms-exchange', 'fruit.apples');
-    channel.bindQueue('animals-queue', 'organisms-exchange', 'animal.*');
     channel.bindQueue('everything-queue', 'organisms-exchange', '#');
 
     setTimeout(() => {

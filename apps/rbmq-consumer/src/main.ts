@@ -1,3 +1,5 @@
-const entryFile = process.argv[2] || 'guidance';
+import { argv } from '@message-brokers-lab/env';
+
+const entryFile = argv.file || 'guidance';
 
 require(`./${entryFile}`);

@@ -18,12 +18,12 @@ amqp.connect(getEnv('RABBITMQ_ENDPOINT'), function(conError, connection) {
       if (qError) {
         throw qError;
       }
-      console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", q.queue);
+      console.log("👂🎧 Waiting for messages in %s. To exit press CTRL+C", q.queue);
       channel.bindQueue(q.queue, exchange, '');
 
       channel.consume(q.queue, function(msg) {
         if (msg.content) {
-          console.log(" [x] %s", msg.content.toString());
+          console.log(" 🚀 Processed %s", msg.content.toString());
         }
       }, {
         noAck: true

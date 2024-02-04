@@ -5,7 +5,8 @@ POST {{rabbitmqPublisherHost}}/animals
 
 {
   "animal": {
-    "name": "🐶 pug #{{$randomInt 1 9999}}"
+    "name": "🐶 pug #{{$randomInt 1 9999}}",
+    "seconds": {{$randomInt 0 10}}
   },
   "types": "dog"
 }
@@ -17,7 +18,8 @@ POST {{rabbitmqPublisherHost}}/fruits
 
 {
   "fruit": {
-    "name": "🍏 apple #{{$randomInt 1 9999}}"
+    "name": "🍏 apple #{{$randomInt 1 9999}}",
+    "seconds": {{$randomInt 0 10}}
   },
   "types": "apple"
 }
@@ -29,7 +31,8 @@ POST {{rabbitmqPublisherHost}}/colors
 
 {
   "color": {
-    "name": "🟫 brown #{{$randomInt 1 9999}}"
+    "name": "🟫 brown #{{$randomInt 1 9999}}",
+    "seconds": {{$randomInt 0 10}}
   },
   "types": "brown"
 }

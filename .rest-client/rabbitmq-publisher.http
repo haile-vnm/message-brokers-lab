@@ -1,12 +1,36 @@
 
-# Register new user
+# Add animals
 POST {{rabbitmqPublisherHost}}/animals
 {{jsonContentType}}
 
 {
   "animal": {
-    "name": "pug"
+    "name": "🐶 pug #{{$randomInt 1 9999}}"
   },
   "types": "dog"
+}
+###
+
+# Add fruits
+POST {{rabbitmqPublisherHost}}/fruits
+{{jsonContentType}}
+
+{
+  "fruit": {
+    "name": "🍏 apple #{{$randomInt 1 9999}}"
+  },
+  "types": "apple"
+}
+###
+
+# Add colors
+POST {{rabbitmqPublisherHost}}/colors
+{{jsonContentType}}
+
+{
+  "color": {
+    "name": "🟫 brown #{{$randomInt 1 9999}}"
+  },
+  "types": "brown"
 }
 ###

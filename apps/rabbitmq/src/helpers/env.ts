@@ -1,3 +1,5 @@
+import { getEnv as getEnvFunc } from '@message-brokers-lab/env';
+
 type EnvKey =
   'PORT' |
   'RABBITMQ_ENDPOINT' |
@@ -10,11 +12,4 @@ type EnvKey =
   'Q_ANIMALS' |
   'Q_EVERYTHING';
 
-export const getEnv = (name: EnvKey): string => {
-  const value = process.env[name];
-  if (!value) {
-    console.log(`🔥 DBG::Missing env ${name}`);
-  }
-
-  return value || '';
-};
+export const getEnv = getEnvFunc<EnvKey>;

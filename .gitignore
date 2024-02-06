@@ -42,6 +42,7 @@ Thumbs.db
 
 # Docker setup
 /env
+.env
 
 # Local resources
 /local-resources

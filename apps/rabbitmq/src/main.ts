@@ -10,6 +10,12 @@ initRabbitmqBroker().then(() => {
   const app = express();
   app.use(bodyParser.json());
 
+  app.get('/', (req, res) => {
+    console.log('Incoming path "/" at', new Date());
+
+    res.json({ ok: Date.now() });
+  });
+
   app.use((req, _, next) => {
     publishMessage({
       xName: getEnv('X_LOGS'),
@@ -42,10 +48,6 @@ initRabbitmqBroker().then(() => {
       xName: getEnv('X_ORGANISMS'),
       message: fruit, routingKey: ['fruit'].concat(types).join('.')
     });
-    res.json({ ok: Date.now() });
-  });
-
-  app.get('/', (req, res) => {
     res.json({ ok: Date.now() });
   });
 

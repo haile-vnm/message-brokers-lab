@@ -16,10 +16,10 @@ services:
       - 5672:5672
     healthcheck:
       test: rabbitmq-diagnostics -q ping
-      interval: 10s
+      interval: 5s
       timeout: 5s
       retries: 5
-      start_period: 10s
+      start_period: 1m
 
   rabbitmq-publisher:
     extends:
@@ -30,6 +30,12 @@ services:
     ports:
       - '3000:3000'
     command: nx serve rabbitmq
+    healthcheck:
+      test: ["CMD-SHELL", "node healthcheck.js http://localhost:3000"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 1m
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -42,7 +48,7 @@ services:
       - ./env/.rabbitmq
     command: nx run rbmq-consumer:serve --args="${ARGS}"
     depends_on:
-      rabbitmq:
+      rabbitmq-publisher:
         condition: service_healthy
 
 volumes:

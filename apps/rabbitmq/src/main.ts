@@ -6,50 +6,53 @@ import { init as initRabbitmqBroker } from './integrations/rabbitmq/broker';
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
-initRabbitmqBroker();
+initRabbitmqBroker().then(() => {
+  const app = express();
+  app.use(bodyParser.json());
 
-const app = express();
-app.use(bodyParser.json());
+  app.use((req, _, next) => {
+    publishMessage({
+      xName: getEnv('X_LOGS'),
+      message: `🚀 Incoming ${req.path} by ${req.ip} at ${new Date().toString()}`
+    });
+    next();
+  })
 
-app.use((req, _, next) => {
-  publishMessage({
-    xName: getEnv('X_LOGS'),
-    message: `🚀 Incoming ${req.path} by ${req.ip} at ${new Date().toString()}`
+  app.post('/colors', (req, res) => {
+    const { color, types } = req.body;
+    publishMessage({
+      xName: getEnv('X_COLORS'),
+      message: color, routingKey: [].concat(types).join('.')
+    });
+    res.json({ ok: Date.now() });
   });
-  next();
-})
 
-app.post('/colors', (req, res) => {
-  const { color, types } = req.body;
-  publishMessage({
-    xName: getEnv('X_COLORS'),
-    message: color, routingKey: [].concat(types).join('.')
+  app.post('/animals', (req, res) => {
+    const { animal, types } = req.body;
+    publishMessage({
+      xName: getEnv('X_ORGANISMS'),
+      message: animal, routingKey: ['animal'].concat(types).join('.')
+    });
+    res.json({ ok: Date.now() });
   });
-  res.json({ ok: Date.now() });
-});
 
-app.post('/animals', (req, res) => {
-  const { animal, types } = req.body;
-  publishMessage({
-    xName: getEnv('X_ORGANISMS'),
-    message: animal, routingKey: ['animal'].concat(types).join('.')
+  app.post('/fruits', (req, res) => {
+    const { fruit, types } = req.body;
+    publishMessage({
+      xName: getEnv('X_ORGANISMS'),
+      message: fruit, routingKey: ['fruit'].concat(types).join('.')
+    });
+    res.json({ ok: Date.now() });
   });
-  res.json({ ok: Date.now() });
-});
 
-app.post('/fruits', (req, res) => {
-  const { fruit, types } = req.body;
-  publishMessage({
-    xName: getEnv('X_ORGANISMS'),
-    message: fruit, routingKey: ['fruit'].concat(types).join('.')
+  app.get('/', (req, res) => {
+    res.json({ ok: Date.now() });
   });
-  res.json({ ok: Date.now() });
-});
 
-app.get('/', (req, res) => {
-  res.json({ ok: Date.now() });
-});
-
-app.listen(port, '0.0.0.0', () => {
-  console.log(`[ ready ] http://${host}:${port}`);
+  app.listen(port, '0.0.0.0', () => {
+    console.log(`[ ready ] http://${host}:${port}`);
+  });
+}).catch(err => {
+  console.log('❌ Initialize AMQP Error', err);
+  process.exit(0);
 });

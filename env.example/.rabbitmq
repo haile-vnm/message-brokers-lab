@@ -1,7 +1,11 @@
+## Servers
 RABBITMQ_DEFAULT_PASS=admin
 RABBITMQ_DEFAULT_USER=admin
+# sharing the same secret to allow all these instances communicate to each other when cluster peering
+# Ref: https://www.rabbitmq.com/docs/clustering#erlang-cookie
+RABBITMQ_ERLANG_COOKIE=peer-node-authentication-cookie-secret-k7UqkCJAdrI2XpPnxR3a8
 
-# publisher
+## publisher
 PORT=3000
 RABBITMQ_ENDPOINT=amqp://admin:admin@rabbitmq
 X_LOGS=x-logs

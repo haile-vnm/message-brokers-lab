@@ -7,7 +7,7 @@ RABBITMQ_ERLANG_COOKIE=peer-node-authentication-cookie-secret-k7UqkCJAdrI2XpPnxR
 
 ## publisher
 PORT=3000
-RABBITMQ_ENDPOINT=amqp://admin:admin@rabbitmq
+RABBITMQ_ENDPOINT=amqp://admin:admin@rabbitmq1
 X_LOGS=x-logs
 X_COLORS=x-colors
 X_ORGANISMS=x-organisms

@@ -37,9 +37,18 @@ services:
     volumes:
       - ./nginx.rabbitmq.conf:/etc/nginx/nginx.conf:ro
     depends_on:
-      - rabbitmq1
-      - rabbitmq2
-      - rabbitmq3
+      rabbitmq1:
+        condition: service_healthy
+      rabbitmq2:
+        condition: service_healthy
+      rabbitmq3:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "service", "nginx", "status"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 1m
 
   rabbitmq-publisher:
     extends:
@@ -57,7 +66,7 @@ services:
       retries: 5
       start_period: 1m
     depends_on:
-      rabbitmq1:
+      rabbitmq:
         condition: service_healthy
 
   rbmq-consumer:

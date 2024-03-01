@@ -22,3 +22,14 @@ services:
       timeout: 5s
       retries: 5
       start_period: 1m
+
+  kafka:
+    image: apache/kafka:3.7.0
+    env_file:
+      - ./env/.kafka
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z localhost 9092 || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 1m

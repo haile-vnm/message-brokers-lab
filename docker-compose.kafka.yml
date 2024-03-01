@@ -1,0 +1,20 @@
+version: '3'
+name: message-brokers
+
+services:
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 9090:8080
+    environment:
+      DYNAMIC_CONFIG_ENABLED: true
+
+  kafka:
+    extends:
+      file: docker-compose.base.yml
+      service: kafka
+    volumes:
+      - ./local-resources/kafka/data:/var/lib/kafka/data
+    environment:
+      - KAFKA_NODE_ID=1
+      - KAFKA_CONTROLLER_QUORUM_VOTERS=1@kafka:9093

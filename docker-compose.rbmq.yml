@@ -1,5 +1,7 @@
 version: '3.4'
 name: message-brokers
+# env_file:
+#   - ./env/.env
 
 services:
   rabbitmq1:
@@ -7,7 +9,7 @@ services:
       file: docker-compose.base.yml
       service: rabbitmq
     volumes:
-      - ./local-resources/rabbitmq1/data:/var/lib/rabbitmq
+      - ./local-resources/rabbitmq-cluster/1/data:/var/lib/rabbitmq
     environment:
       - RABBITMQ_NODENAME=rabbit@rabbitmq1
 
@@ -16,7 +18,7 @@ services:
       file: docker-compose.base.yml
       service: rabbitmq
     volumes:
-      - ./local-resources/rabbitmq2/data:/var/lib/rabbitmq
+      - ./local-resources/rabbitmq-cluster/2/data:/var/lib/rabbitmq
     environment:
       - RABBITMQ_NODENAME=rabbit@rabbitmq2
 
@@ -25,7 +27,7 @@ services:
       file: docker-compose.base.yml
       service: rabbitmq
     volumes:
-      - ./local-resources/rabbitmq3/data:/var/lib/rabbitmq
+      - ./local-resources/rabbitmq-cluster/3/data:/var/lib/rabbitmq
     environment:
       - RABBITMQ_NODENAME=rabbit@rabbitmq3
 
@@ -73,6 +75,8 @@ services:
     extends:
       file: docker-compose.base.yml
       service: nx-app-base
+    deploy:
+      replicas: 2
     env_file:
       - ./env/.rabbitmq
     command: nx run rbmq-consumer:serve --args="${ARGS}"

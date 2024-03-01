@@ -8,13 +8,35 @@ services:
       - 9090:8080
     environment:
       DYNAMIC_CONFIG_ENABLED: true
+    volumes:
+      - ./kafka-ui.config.yaml:/etc/kafkaui/dynamic_config.yaml
 
-  kafka:
+  kafka1:
     extends:
       file: docker-compose.base.yml
       service: kafka
     volumes:
-      - ./local-resources/kafka/data:/var/lib/kafka/data
+      - ./local-resources/kafka-cluster/1/data:/tmp/kafka-logs
     environment:
       - KAFKA_NODE_ID=1
-      - KAFKA_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
+      - KAFKA_CONTROLLER_QUORUM_VOTERS=1@kafka1:9093,2@kafka2:9093,3@kafka3:9093
+
+  kafka2:
+    extends:
+      file: docker-compose.base.yml
+      service: kafka
+    volumes:
+      - ./local-resources/kafka-cluster/2/data:/tmp/kafka-logs
+    environment:
+      - KAFKA_NODE_ID=2
+      - KAFKA_CONTROLLER_QUORUM_VOTERS=1@kafka1:9093,2@kafka2:9093,3@kafka3:9093
+
+  kafka3:
+    extends:
+      file: docker-compose.base.yml
+      service: kafka
+    volumes:
+      - ./local-resources/kafka-cluster/3/data:/tmp/kafka-logs
+    environment:
+      - KAFKA_NODE_ID=3
+      - KAFKA_CONTROLLER_QUORUM_VOTERS=1@kafka1:9093,2@kafka2:9093,3@kafka3:9093

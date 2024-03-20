@@ -4,10 +4,14 @@ import { publishMessage } from './integrations/rabbitmq/events';
 import { getEnv } from './helpers/env';
 import { init as initRabbitmqBroker } from './integrations/rabbitmq/broker';
 import { streamLog } from './integrations/rabbitmq/streams/publisher';
+import { init as initRabbitmqStreams } from './integrations/rabbitmq/streams/brokers';
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
-initRabbitmqBroker().then(() => {
+Promise.all([
+  initRabbitmqBroker(),
+  initRabbitmqStreams()
+]).then(() => {
   const app = express();
   app.use(bodyParser.json());
 

@@ -7,7 +7,7 @@ const intializeResources = async () => {
   await getStreamClient().createSuperStream(
     { streamName: getEnv('RABBITMQ_STREAM_LOGS_NAME'), arguments: { 'initial-cluster-size': 2 }  },
     undefined, // binding keys
-    5 // partions
+    3 // partions
   )
   // Waiting 400ms for partitions to be created
   await new Promise(r => {

@@ -6,6 +6,6 @@ client.then(client => {
     superStream: getEnv('RABBITMQ_STREAM_LOGS_NAME'),
     // offset: Offset.first(), singleActiveConsumer are default client library options and can not be changed now
   }, message => {
-    console.log(`${new Date()} - Received Message from SUPER STREAM ${getEnv('RABBITMQ_STREAM_LOGS_NAME')}`, message.content.toString()) // it's a Buffer
+    console.log(`${new Date().toISOString()} - Received Message from SUPER STREAM ${getEnv('RABBITMQ_STREAM_LOGS_NAME')}`, message.content.toString()) // it's a Buffer
   });
 });

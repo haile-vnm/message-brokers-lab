@@ -6,7 +6,8 @@ client.then(client => {
   client.declareConsumer({
     stream: getEnv('RABBITMQ_STREAM_COLORS_NAME'),
     singleActive: true,
-    offset: Offset.timestamp(new Date(Date.now() - 15 * 60 * 1000)), // from past 15 minutes
+    consumerRef: 'log-color-event',
+    offset: Offset.timestamp(new Date(Date.now() - 2 * 60 * 1000)), // only read messages from past 2 minutes
   }, message => {
     console.log(`${new Date().toUTCString()} received COLORS stream message:`, message.content.toString());
   })

@@ -17,6 +17,9 @@ dependencies:
   express:
     specifier: ~4.18.1
     version: 4.18.2
+  kafkajs:
+    specifier: ^2.2.4
+    version: 2.2.4
   rabbitmq-stream-js-client:
     specifier: ^0.3.1
     version: 0.3.1
@@ -4999,6 +5002,11 @@ packages:
     optionalDependencies:
       graceful-fs: 4.2.11
     dev: true
+
+  /kafkajs@2.2.4:
+    resolution: {integrity: sha512-j/YeapB1vfPT2iOIUn/vxdyKEuhuY2PxMBvf5JWux6iSaukAccrMtXEY/Lb7OvavDhOWME589bpLrEdnVHjfjA==}
+    engines: {node: '>=14.0.0'}
+    dev: false
 
   /keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}

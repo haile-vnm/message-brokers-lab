@@ -5,6 +5,7 @@ import { getEnv } from './helpers/env';
 import { init as initRabbitmqBroker } from './integrations/rabbitmq/broker';
 import { streamLog } from './integrations/rabbitmq/streams/publisher';
 import { init as initRabbitmqStreams } from './integrations/rabbitmq/streams/brokers';
+import { streamColor } from './integrations/rabbitmq/streams/color-publisher';
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
 
@@ -38,7 +39,9 @@ Promise.all([
       message: color, routingKey
     });
 
-    streamLog({ content: color, category: routingKey, id: crypto.randomUUID() });
+    const messageId = crypto.randomUUID();
+    streamLog({ content: color, category: routingKey, id: messageId });
+    streamColor({ content: color, category: routingKey, id: messageId });
 
     res.json({ ok: Date.now() });
   });

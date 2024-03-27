@@ -1,0 +1,67 @@
+{
+  "name": "kafka-publisher",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/kafka-publisher/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/kafka-publisher",
+        "format": ["cjs"],
+        "bundle": false,
+        "main": "apps/kafka-publisher/src/main.ts",
+        "tsConfig": "apps/kafka-publisher/tsconfig.app.json",
+        "assets": ["apps/kafka-publisher/src/assets"],
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "kafka-publisher:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "kafka-publisher:build:development"
+        },
+        "production": {
+          "buildTarget": "kafka-publisher:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/kafka-publisher/jest.config.ts"
+      }
+    }
+  },
+  "tags": []
+}

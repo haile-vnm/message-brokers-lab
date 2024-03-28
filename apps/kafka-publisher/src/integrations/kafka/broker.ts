@@ -2,7 +2,7 @@ import { Kafka, Message, Producer, ProducerBatch, TopicMessages } from 'kafkajs'
 import getEnv from '../../helpers/env';
 
 const createKafka = () => new Kafka({
-  clientId: getEnv('APP_ID'),
+  clientId: getEnv('PUBLISHER_ID'),
   brokers: getEnv('KAFKA_BROKERS').split(/\s*,\s*/).filter(Boolean),
 });
 

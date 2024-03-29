@@ -1,4 +1,4 @@
-import { Kafka, Message, Producer, ProducerBatch, TopicMessages } from 'kafkajs';
+import { Kafka, Message, Partitioners, Producer, ProducerBatch, TopicMessages } from 'kafkajs';
 import getEnv from '../../helpers/env';
 
 const createKafka = () => new Kafka({
@@ -8,20 +8,32 @@ const createKafka = () => new Kafka({
 
 export default class ProducerFactory {
   private producer: Producer;
-  private static instance: ProducerFactory;
+  private static instance: Promise<ProducerFactory>;
 
-  static async create() {
+  static async getInstance() {
     if (!ProducerFactory.instance) {
-      ProducerFactory.instance = new ProducerFactory();
-      await ProducerFactory.instance.start()
+      this.instance = new Promise(
+        res => {
+          const instance = new ProducerFactory();
+          instance.start().then(() => res(instance));
+        }
+      );
     }
 
     return ProducerFactory.instance;
   }
 
-  constructor() {
+  private constructor() {
     this.producer = this.createProducer();
-    this.start();
+
+    this.producer.on('producer.connect', (event) => {
+      console.log('Kafka Producer connect successfully', event.type, event.timestamp);
+    })
+
+    this.producer.on('producer.disconnect', (event) => {
+      // need to implement the logic to reconnect if needed
+      console.log('Kafka Producer disconnected', event.type, event.timestamp);
+    })
   }
 
   public async start(): Promise<void> {
@@ -66,8 +78,7 @@ export default class ProducerFactory {
 
   private createProducer() : Producer {
     const kafka = createKafka();
-
-    return kafka.producer();
+    return kafka.producer({ createPartitioner: Partitioners.DefaultPartitioner });
   }
 }
 
@@ -75,7 +86,9 @@ export const init = async () => {
   const kafka = createKafka();
   const admin = kafka.admin();
 
-  admin.createTopics({
+  await admin.connect()
+
+  await admin.createTopics({
     topics: [
       {
         topic: getEnv('LOGS_TOPIC'),
@@ -83,12 +96,11 @@ export const init = async () => {
       },
       {
         topic: getEnv('COLORS_TOPIC'),
-        numPartitions: 5
+        numPartitions: 5,
+        replicationFactor: 2
       }
     ]
   })
 
-  // remember to connect and disconnect when you are done
-  await admin.connect()
-  await admin.disconnect()
+  return admin.disconnect();
 }

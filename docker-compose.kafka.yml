@@ -40,3 +40,29 @@ services:
     environment:
       - KAFKA_NODE_ID=3
       - KAFKA_CONTROLLER_QUORUM_VOTERS=1@kafka1:9093,2@kafka2:9093,3@kafka3:9093
+
+  kafka-publisher:
+    extends:
+      file: docker-compose.base.yml
+      service: nx-app-base
+    env_file:
+      - ./env/kafka.env
+    ports:
+      - '3000:3000'
+    command: nx serve kafka-publisher
+    healthcheck:
+      test: ["CMD-SHELL", "node healthcheck.js http://localhost:3000"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 1m
+    depends_on:
+      kafka1:
+        condition: service_healthy
+      kafka2:
+        condition: service_healthy
+      kafka3:
+        condition: service_healthy
+
+volumes:
+  root-node_modules: null

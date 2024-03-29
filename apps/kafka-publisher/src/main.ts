@@ -2,12 +2,15 @@ import express from 'express';
 import { publishColors } from './integrations/kafka/colors-publisher';
 import { publishLog } from './integrations/kafka/logs-publisher';
 import { init } from './integrations/kafka/broker';
+import getEnv from './helpers/env';
+import bodyParser from 'body-parser';
 
 const host = process.env.HOST ?? 'localhost';
-const port = process.env.PORT ? Number(process.env.PORT) : 3000;
+const port = Number(getEnv('PORT') || 3000);
 
 init().then(() => {
   const app = express();
+  app.use(bodyParser.json());
 
   app.get('/', (req, res) => {
     res.send({ message: 'Hello API' });
@@ -29,7 +32,7 @@ init().then(() => {
     res.json({ ok: Date.now() });
   });
 
-  app.listen(port, host, () => {
+  app.listen(port, '0.0.0.0', () => {
     console.log(`[ ready ] http://${host}:${port}`);
   });
 })

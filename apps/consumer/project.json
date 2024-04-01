@@ -1,7 +1,7 @@
 {
-  "name": "rbmq-consumer",
+  "name": "consumer",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/rbmq-consumer/src",
+  "sourceRoot": "apps/consumer/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -10,12 +10,12 @@
       "defaultConfiguration": "production",
       "options": {
         "platform": "node",
-        "outputPath": "dist/apps/rbmq-consumer",
+        "outputPath": "dist/apps/consumer",
         "format": ["cjs"],
         "bundle": false,
-        "main": "apps/rbmq-consumer/src/main.ts",
-        "tsConfig": "apps/rbmq-consumer/tsconfig.app.json",
-        "assets": ["apps/rbmq-consumer/src/assets"],
+        "main": "apps/consumer/src/main.ts",
+        "tsConfig": "apps/consumer/tsconfig.app.json",
+        "assets": ["apps/consumer/src/assets"],
         "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true,
@@ -40,14 +40,14 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "rbmq-consumer:build"
+        "buildTarget": "consumer:build"
       },
       "configurations": {
         "development": {
-          "buildTarget": "rbmq-consumer:build:development"
+          "buildTarget": "consumer:build:development"
         },
         "production": {
-          "buildTarget": "rbmq-consumer:build:production"
+          "buildTarget": "consumer:build:production"
         }
       }
     },
@@ -59,7 +59,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "apps/rbmq-consumer/jest.config.ts"
+        "jestConfig": "apps/consumer/jest.config.ts"
       }
     }
   },

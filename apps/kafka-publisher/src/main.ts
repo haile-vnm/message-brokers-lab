@@ -27,8 +27,9 @@ init().then(() => {
   });
 
   app.post('/animals', (req, res) => {
-    const { animal } = req.body;
-    publishLog([{ content: animal, id: crypto.randomUUID() }], 'animals')
+    const { animal, types } = req.body;
+    const animalType = ['animal'].concat(types).join('.');
+    publishLog([{ content: animal, id: crypto.randomUUID() }], animalType )
     res.json({ ok: Date.now() });
   });
 

@@ -7,6 +7,6 @@ logTopic.startConsumer(
   getEnv('LOGS_TOPIC'),
   async payload => {
     const { message, partition  } = payload;
-    console.log(`✅ Consuming ${getEnv('LOGS_TOPIC')} TOPIC, partion ${partition} message`, message.timestamp, message.value);
+    console.log(`✅ Consuming ${getEnv('LOGS_TOPIC')} TOPIC, partion ${partition} message`, message.timestamp, message.value.toString());
   }
 );

@@ -64,5 +64,18 @@ services:
       kafka3:
         condition: service_healthy
 
+  kafka-consumer:
+    extends:
+      file: docker-compose.base.yml
+      service: nx-app-base
+    deploy:
+      replicas: 2
+    env_file:
+      - ./env/kafka.env
+    command: nx run consumer:serve --args="${ARGS}"
+    depends_on:
+      kafka-publisher:
+        condition: service_healthy
+
 volumes:
   root-node_modules: null

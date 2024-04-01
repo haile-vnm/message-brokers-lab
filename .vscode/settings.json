@@ -4,7 +4,8 @@
       "jsonContentType": "content-type: application/json"
     },
     "local": {
-      "rabbitmqPublisherHost": "http://localhost:3000"
+      "rabbitmqPublisherHost": "http://localhost:3000",
+      "kafkaPublisherHost": "http://localhost:4000"
     }
   }
 }

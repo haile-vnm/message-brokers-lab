@@ -1,0 +1,29 @@
+# Add animals
+# The event will spread message base on the types,
+# and the type values: fish, dog, cat would be separated to difference partitions
+POST {{kafkaPublisherHost}}/animals
+{{jsonContentType}}
+
+{
+  "animal": {
+    "name": "🐶 pug #{{$randomInt 1 9999}}",
+    "seconds": {{$randomInt 0 10}}
+  },
+  "types": "dog"
+}
+###
+
+# Add colors
+# The event will spread message base on the types,
+# and the type values: pink, red, brown, gray, green would be separated to difference partitions
+POST {{kafkaPublisherHost}}/colors
+{{jsonContentType}}
+
+{
+  "color": {
+    "name": "🟫 brown #{{$randomInt 1 9999}}",
+    "seconds": {{$randomInt 0 10}}
+  },
+  "types": "brown"
+}
+###

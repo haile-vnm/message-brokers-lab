@@ -1,5 +1,5 @@
-import { client } from './utils';
-import getEnv from '../helpers/env';
+import { client } from '../../integrations/rabbitmq/utils';
+import getEnv from '../../helpers/env';
 
 client.then((client) => {
   client.declareSuperStreamConsumer(

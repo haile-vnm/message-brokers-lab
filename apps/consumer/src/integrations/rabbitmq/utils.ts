@@ -1,5 +1,5 @@
 import { connect } from 'rabbitmq-stream-js-client';
-import getEnv from '../helpers/env';
+import getEnv from '../../helpers/env';
 
 export const client = connect({
   hostname: getEnv('RABBITMQ_STREAM_HOSTNAME'),

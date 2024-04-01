@@ -1,5 +1,5 @@
 import amqp from 'amqplib/callback_api';
-import getEnv from './helpers/env';
+import getEnv from '../../helpers/env';
 
 amqp.connect(getEnv('RABBITMQ_ENDPOINT'), function (conError, connection) {
   if (conError) {

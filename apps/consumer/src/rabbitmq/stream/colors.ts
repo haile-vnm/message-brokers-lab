@@ -1,6 +1,6 @@
 import { Offset } from 'rabbitmq-stream-js-client';
-import getEnv from '../helpers/env';
-import { client } from './utils';
+import getEnv from '../../helpers/env';
+import { client } from '../../integrations/rabbitmq/utils';
 
 client.then((client) => {
   client.declareConsumer(

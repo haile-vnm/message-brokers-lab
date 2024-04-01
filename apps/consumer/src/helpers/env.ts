@@ -1,7 +1,7 @@
 import { getEnv } from '@message-brokers-lab/env';
 
 export default getEnv<
-  | 'PORT'
+  // rabbitmq consumers
   | 'RABBITMQ_ENDPOINT'
   | 'X_LOGS'
   | 'X_COLORS'
@@ -18,4 +18,16 @@ export default getEnv<
   | 'RABBITMQ_STREAM_VHOST'
   | 'RABBITMQ_STREAM_COLORS_NAME'
   | 'RABBITMQ_STREAM_LOGS_NAME'
+
+  // kafka consumers
+  | 'KAFKA_PROCESS_ROLES'
+  | 'KAFKA_LISTENERS'
+  | 'KAFKA_LISTENER_SECURITY_PROTOCOL_MAP'
+  | 'KAFKA_CONTROLLER_LISTENER_NAMES'
+
+  | 'CONSUMER_APP_ID'
+  | 'CONSUMER_GROUP_ID'
+  | 'KAFKA_BROKERS'
+  | 'LOGS_TOPIC'
+  | 'COLORS_TOPIC'
 >;

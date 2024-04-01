@@ -77,7 +77,7 @@ services:
       replicas: 2
     env_file:
       - ./env/.rabbitmq
-    command: nx run rbmq-consumer:serve --args="${ARGS}"
+    command: nx run consumer:serve --args="${ARGS}"
     depends_on:
       rabbitmq-publisher:
         condition: service_healthy

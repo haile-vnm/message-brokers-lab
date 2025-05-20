@@ -25,7 +25,7 @@ Before proceeding, ensure that you have the following prerequisites installed:
    Execute the following command to start RabbitMQ services. Adjust the arguments as needed.
 
    ```shell
-   ARGS="file=worker queue=q-animals" docker compose -f docker-compose.rbmq.yml up
+   ARGS="file=rabbitmq/queue/worker queue=q-animals" docker compose -f docker-compose.rbmq.yml up
    ```
 
    This command initializes RabbitMQ services with specified parameters. You can observe logs for new message publications in the `q-animals` queue. If desired, you can change the queue name to process messages in a different queue (found in the `env/rabbitmq` file).

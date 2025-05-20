@@ -1,4 +1,4 @@
-FROM rabbitmq:3.13-management
+FROM rabbitmq:4-management
 
 # enable new plugin by redefining the dockerfile for
 # - extending the original docker image
